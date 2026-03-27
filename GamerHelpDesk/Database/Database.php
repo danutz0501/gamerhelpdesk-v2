@@ -62,7 +62,7 @@ abstract class Database
      */
     public function connect($path): void 
     {
-        $this->pdo = new PDO(dsn: "sqlite:$path/gamerhelpdesk.db");
+        $this->pdo = new PDO(dsn: "sqlite:$path");
         $this->pdo->setAttribute(attribute: PDO::ATTR_ERRMODE, value: PDO::ERRMODE_EXCEPTION);
         $this->createTables();
     }  

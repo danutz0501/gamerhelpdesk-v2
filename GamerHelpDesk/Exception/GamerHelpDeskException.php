@@ -52,7 +52,7 @@ class GamerHelpDeskException extends Exception
     }
 
     /**
-     * Handles errors and throws an ErrorException with the error message, error number, file, and line number.
+     * Handles PHP errors and throws an ErrorException with the error message, error number, file, and line number.
      * @param int $errno The error number.
      * @param string $errstr The error message.
      * @param string $errfile The file where the error occurred.

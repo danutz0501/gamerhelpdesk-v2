@@ -40,7 +40,7 @@ class Database extends \GamerHelpDesk\Database\Database
     
     public function connect($path): void
     {
-        parent::connect($path);
+        parent::connect($path.'/gamerhelpdesk.db');
     }
 
     

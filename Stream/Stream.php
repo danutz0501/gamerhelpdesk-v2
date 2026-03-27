@@ -63,4 +63,10 @@ class Stream
     {
         echo "Be right back - Stream...<br>";
     }
+
+    #[Get(route: '/show-image/{#imageNumber :number}')]
+    public function showImage(...$images)
+    {
+        echo "Stream - Show Image number:  " . $images["imageNumber"] . "<br>";
+    }
 }

@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace GamerHelpDesk\Http\Router;
 
 use GamerHelpDesk\Util\SingletonTrait\SingletonTrait;
+use GamerHelpDesk\Http\Router\Attribute\RouteAttribute;
 use GamerHelpDesk\Http\Request\Request;
 use GamerHelpDesk\Http\Response\Response;
 use GamerHelpDesk\Exception\{
@@ -36,7 +37,6 @@ use GamerHelpDesk\Exception\{
 use ReflectionClass;
 use ReflectionException;
 use ReflectionAttribute;
-use GamerHelpDesk\Http\Router\Attribute\RouteAttribute;
 
 class Router
 {

@@ -30,6 +30,12 @@ class RouteTest extends TestCase
         $this->assertEquals($paramArray, $route->parameters);
     }
 
+    public function testRouteVerificationFalse(): void
+    {
+        $route = new Route("/", "home");
+        $this->assertFalse($route->verify('/home'));
+    }
+
     public function testRouteCreation(): void
     {
         $route = new Route("/", "home");

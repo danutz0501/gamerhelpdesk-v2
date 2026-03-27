@@ -88,27 +88,11 @@ try
 
         // Dispatch the request to the appropriate route handler
         $router->dispatch();
-
-        var_dump($router->getRoutesArray());
     } 
     else
     {
         throw new \RuntimeException(message: "Autoloader not found or not readable. Please run 'composer install' to generate the autoloader and install dependencies first and/or ensure the file is readable.");
     }
-    echo "<br>";
-    echo "<pre>";
-    echo "Memory Usage: " . memory_get_usage() / 1024 . " kb";
-    echo "<br>";
-    echo "Memory Peak Usage: " . memory_get_peak_usage() / 1024 . " kb";
-    echo "<br>";
-    $get = $router->request->get;
-    $post = $router->request->post;
-    echo "GET: " . (is_null(value: $get) ? "null" : json_encode($get));
-    echo "<br>";
-    echo $router->request->query;
-    echo "<br>";
-    echo "POST: " . (is_null(value: $post) ? "null" : json_encode($post));
-    echo "</pre>";
 }
  catch (\Throwable $e) 
 {
