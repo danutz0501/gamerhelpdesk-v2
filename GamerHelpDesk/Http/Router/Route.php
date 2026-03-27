@@ -117,25 +117,21 @@ class Route
     }
 
     /**
-     * Extracts the parameters from the matches array returned by preg_match.
-     * The parameters are extracted from the matches array by iterating over it and selecting every third element.
-     * The extracted parameters are then returned as an array.
-     * @param array $matches The matches array returned by preg_match.
-     * @return array The extracted parameters as an array.
+     * Extracts the parameters from the given matches array.
+     * It filters out any keys that are not strings and returns the resulting array.
+     * @param array $matches The matches array to extract parameters from.
+     * @return array The extracted parameters.
      */
     private function extractParameters(array $matches): array
     {
-        $temporaryArray = [];
-        $matches = array_values(array: $matches);
-        $numberOfParameters = count(value: $matches);
-        for($i = 1; $i <= $numberOfParameters; $i++)
+        foreach($matches as $key => $value)
         {
-            if($i % 3 === 0)
+            if(!is_string($key))
             {
-               $temporaryArray[] = $matches[$i];
+                unset($matches[$key]);
             }
         }
-        return $temporaryArray;
+        return $matches;
     }
 
     /**
