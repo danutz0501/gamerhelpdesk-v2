@@ -1,0 +1,66 @@
+<?php
+/**
+ * File: Stream.php
+ * Project: GamerHelpDesk
+ * Created Date: March 2026
+ * Author: danutz0501 (M. Dumitru Daniel)
+ * -----
+ * Last Modified:
+ * Modified By:
+ * -----
+ * Copyright (c) 2026 M. Dumitru Daniel (M. Dumitru Daniel)
+ *  This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+declare(strict_types=1);
+
+namespace Stream;
+
+use GamerHelpDesk\Http\Router\{
+    Router,
+    Attribute\Get,
+    Attribute\Post
+
+};
+use GamerHelpDesk\Exception\{
+    GamerHelpDeskException,
+    GamerHelpDeskExceptionEnum
+};
+
+class Stream
+{
+    #[Get(route: '/')]
+    #[Get(route: '/index')]
+    public function index()
+    {
+        echo "Stream - Index";
+    }
+
+    #[Get(route: '/start')]   
+     public function start()
+    {
+        echo "Starting Stream...<br>";
+    }
+
+    #[Get(route: '/stop')]
+    public function stop()
+    {
+        echo "Stopping Stream...<br>";
+    }
+
+    #[Get(route: '/brb')]
+    public function brb()
+    {
+        echo "Be right back - Stream...<br>";
+    }
+}

@@ -1,0 +1,6 @@
+Options +FollowSymlinks -MultiViews -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^.*\.(css|js|jpe?g|gif|png|ico)$ [NC]
+RewriteRule ^(.*)$ index.php/$1

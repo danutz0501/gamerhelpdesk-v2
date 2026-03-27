@@ -1,0 +1,21 @@
+{
+    "require": {
+        "php": ">=8.5",
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-xdebug": "*",
+
+        
+        "phpunit/phpunit": "^10.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "GamerHelpDesk\\": "GamerHelpDesk/",
+            "Stream\\": "Stream/",
+            "Tools\\": "Tools/",
+            "Database\\": "Database/"
+        }
+    }
+}
