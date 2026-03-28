@@ -36,20 +36,32 @@ use GamerHelpDesk\Exception\{
     GamerHelpDeskException,
     GamerHelpDeskExceptionEnum
 };
+use GamerHelpDesk\View\View;
 
 class Stream
 {
+    public function __construct(public string $viewPath = VIEWS_PATH . "views" . DIRECTORY_SEPARATOR . "stream" . DIRECTORY_SEPARATOR,
+                                public string $customCss = '')
+    {
+        
+    }
     #[Get(route: '/')]
     #[Get(route: '/index')]
     public function index()
     {
-        echo "Stream - Index";
+        $view = new View($this->viewPath . 'stream');
+        $view->assign('title', 'Stream - Index');
+        $view->assign('customCss', $this->customCss);
+        echo $view->render();
     }
 
     #[Get(route: '/start')]   
      public function start()
     {
-        echo "Starting Stream...<br>";
+        $view = new View($this->viewPath . 'stream-starting');
+        $view->assign('title', 'Stream - Starting');
+        $view->assign('customCss', $this->customCss);
+        echo $view->render();
     }
 
     #[Get(route: '/stop')]
@@ -69,4 +81,5 @@ class Stream
     {
         echo "Stream - Show Image number:  " . $images["imageNumber"] . "<br>";
     }
+    
 }
