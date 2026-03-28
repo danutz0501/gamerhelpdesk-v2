@@ -26,7 +26,7 @@
 - request class/object
 - in the work of adding some database layer sqplite/PDO (maybe add some crud capability);
 - started to add unit test, maybe take care of coverage;
-  ###Components to be added:
+###Components to be added:
 - response classes.
 - to be added;
 
