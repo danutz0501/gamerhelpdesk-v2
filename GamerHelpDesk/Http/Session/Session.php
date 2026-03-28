@@ -39,6 +39,9 @@ use GamerHelpDesk\Util\{
  * This class manages session data by reading and writing session files to a specified save path.
  * It also includes methods for validating and regenerating session IDs, as well as garbage collection of old session files.
  * The session handler is registered with PHP's session management system, allowing it to handle all session operations for the application.
+ * Note: Ensure that the session save path is properly configured and writable by the web server for this session handler to function correctly.
+ * @package GamerHelpDesk\Http\Session
+ * @version 1.0.0
  */
 class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerInterface, SessionIdInterface
 {
@@ -48,6 +51,8 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
      * The SingletonTrait provides a getInstance() method that allows you to retrieve the single instance of the Session class, and it ensures that the constructor is private to prevent direct instantiation.
      * By using the Singleton pattern, we can ensure that all parts of the application are using the same session handler instance, 
      *  which helps to maintain consistent session state and avoid potential conflicts or issues that can arise from multiple instances of the session handler.
+     * @package GamerHelpDesk\Http\Session
+     * @version 1.0.0
      */
     use SingletonTrait;
     
