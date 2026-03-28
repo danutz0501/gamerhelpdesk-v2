@@ -143,7 +143,6 @@ try
          * Dispatch the router to handle the incoming request and route it to the appropriate controller and method based on the defined routes.
          */
         $router->dispatch();
-        $_SESSION['last_request_time'] = time();
     } 
     else
     {

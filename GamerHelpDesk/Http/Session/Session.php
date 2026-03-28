@@ -34,6 +34,12 @@ use GamerHelpDesk\Util\{
     SingletonTrait\SingletonTrait
 };
 
+/**
+ * Session class that implements custom session handling using the Singleton pattern.
+ * This class manages session data by reading and writing session files to a specified save path.
+ * It also includes methods for validating and regenerating session IDs, as well as garbage collection of old session files.
+ * The session handler is registered with PHP's session management system, allowing it to handle all session operations for the application.
+ */
 class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerInterface, SessionIdInterface
 {
     /**
@@ -108,7 +114,7 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
      * @param string $savePath The path to which session data will be saved.
      * @param string $sessionName The name of the session.
      * @return bool Always returns true.
-     * @throws \RuntimeException If the session has already been started or if headers have already been sent.
+     * @throws \RuntimeException if the save path directory cannot be created or is not writable by the web server.
      */
     public function open(string $savePath, string $sessionName): bool
     {
