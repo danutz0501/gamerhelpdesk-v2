@@ -19,12 +19,15 @@
         echo "Stream - Index";
     }
 ```
-
+- cookie with encryption, hmac sign and key rotation;
+- custom session handler;
+- super tiny basic template engine
 - in the work of adding the fs part, extending spl file system classes and adding some methods to them;
-- super tiny basic template engine;
-- some database layer sqplite/PDO (maybe add some crud capability);
+- request class/object
+- in the work of adding some database layer sqplite/PDO (maybe add some crud capability);
 - started to add unit test, maybe take care of coverage;
-- request and response classes.
+  ###Components to be added:
+- response classes.
 - to be added;
 
 ### And again this is not intended to be used in production(it's just for in house use)
