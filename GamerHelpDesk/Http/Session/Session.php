@@ -230,7 +230,7 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
     /**
      * Validates a session ID.
      * This method checks if a given session ID is valid.
-     * A valid session ID is a 32-character long hexadecimal string.
+     * A valid session ID is a 64-character long hexadecimal string.
      * @param string $sessionId The session ID to be validated.
      * @return bool True if the session ID is valid, false otherwise.
      */
@@ -261,7 +261,7 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
     /**
      * Generates a secure, random session ID.
      * The session ID is generated using the Randomizer library with the Secure engine.
-     * The session ID is a 32-character long hexadecimal string.
+     * The session ID is a 64-character long hexadecimal string.
      * @return string A secure, random session ID.
      */
     public function create_sid(): string
