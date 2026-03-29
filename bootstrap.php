@@ -117,6 +117,9 @@ try
 
         /**
          * Initialize the error handler
+         * @see \GamerHelpDesk\Exception\GamerHelpDeskException
+         * Note: The error handler will convert PHP errors into exceptions, allowing you to catch and handle them using try-catch blocks. 
+         * This can be useful for handling errors in a more structured way and providing better error messages
          */
         //set_error_handler("GamerHelpDesk\Exception\GamerHelpDeskException::handleError");
 
@@ -141,7 +144,7 @@ try
          * One advantage of named routes is that they can be used in other controller for routes that need to be reused across multiple controllers.
          * @example of attribute-based routing in a controller:
          * $router->addAttributeRoute(routes: ["Namespace\\ClassName"]);
-         * #[Get(route: '/show-image/{#imageNumber :number}')]
+         * #[Get(route: '/name of the route'), Post(route: '/name of the route'), ex: Get(route: '/show-image/{#imageNumber :number}')]
          * public function showImage(...$images)
          * {
          *    echo "Stream - Show Image number:  " . $images["imageNumber"] . "<br>";
