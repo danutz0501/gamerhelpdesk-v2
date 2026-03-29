@@ -26,6 +26,11 @@
 - request class/object
 - in the work of adding some database layer sqplite/PDO (maybe add some crud capability);
 - started to add unit test, maybe take care of coverage;
+- .env class to use;
+- zip for archive stuff;
+- hash helper function;
+- registry class;
+- random stuff using Randomizer php extension;
   
 Components to be added:
 - response classes.
