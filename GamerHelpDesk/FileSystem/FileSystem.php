@@ -345,10 +345,15 @@ class FileSystem
                 $files[] = $item->getPathname();
             }
         }
-
         return $files;
     }
-
+    /**
+     * Lists all files and directories in a given directory.
+     * 
+     * @param string $directoryPath The path to the directory to list content from.
+     * @return array An array of file and directory paths.
+     * @throws GamerHelpDeskException If the directory does not exist or if it is not readable.
+     */
     public function listContent(string $directoryPath): array
     {
         if(!is_dir(filename: $directoryPath))
@@ -375,7 +380,6 @@ class FileSystem
         return $content;
     }
 
-    
     /**
      * Lists all directories in a given directory.
      * 
@@ -412,7 +416,6 @@ class FileSystem
         return $directories;
     }
 
-    
     /**
      * Lists all files and directories in a given directory, with their respective types.
      * 
@@ -445,7 +448,6 @@ class FileSystem
                 "type" => $item->isDir() ? "directory" : "file"
             ];
         }
-
         return $content;
     }
 
@@ -491,7 +493,6 @@ class FileSystem
         ];
     }
 
-    
     /**
      * Gets information about all files and directories in a given directory.
      * 
