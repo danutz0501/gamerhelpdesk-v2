@@ -47,6 +47,12 @@ class Hash
             return $this->algorithm;
         }
     }
+
+    /**
+     * Initializes a new instance of the Hash class with the given hash algorithm.
+     * @param string $algorithm The hash algorithm to use for generating and verifying hashes. Defaults to 'sha256'.
+     * @throws GamerHelpDeskException If the given hash algorithm is not valid.
+     */
     public function __construct(string $algorithm = 'sha256')
     {
         if (!in_array($algorithm, hash_algos())) 
