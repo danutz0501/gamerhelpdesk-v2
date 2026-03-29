@@ -682,6 +682,7 @@ class FileSystem
     /**
      * Counts the number of lines in a given file.
      * This function will ignore empty lines and lines which only contain whitespace.
+     * 
      * @param string $filePath The path to the file to count lines from.
      * @return int The number of lines in the given file.
      * @throws GamerHelpDeskException If the given file does not exist or if it is not readable.
@@ -694,6 +695,7 @@ class FileSystem
     /**
      * Gets a specific line from a file.
      * This function will ignore empty lines and lines which only contain whitespace.
+     * 
      * @param string $filePath The path to the file to get the line from.
      * @param int $lineNumber The number of the line to get.
      * @return string The contents of the specified line.
@@ -702,5 +704,82 @@ class FileSystem
     public function getLine(string $filePath, int $lineNumber): string
     {
         return file(filename: $filePath, flags: FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)[$lineNumber - 1];
+    }
+
+    /**
+     * Downloads a file from a given path.
+     * 
+     * @param string $filePath The path to the file to download.
+     * @param string|null $downloadName The name to use for the downloaded file. If null, the original file name will be used.
+     * @throws GamerHelpDeskException If the file does not exist or if it is not readable.
+     */
+    public function downloadFile(string $filePath, ?string $downloadName): void
+    {
+        if(!file_exists(filename: $filePath))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "File not found: $filePath");
+        }
+
+        if(!is_readable(filename: $filePath))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "File is not readable: $filePath. Check permissions.");
+        }
+
+        if(headers_sent())
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "Cannot download file: Headers already sent.");
+        }
+
+        header(header: "Content-Description: File Transfer");
+        header(header: "Content-Type: application/octet-stream");
+        header(header: "Content-Disposition: attachment; filename=\"" . ($downloadName ?? basename(path: $filePath)) . "\"");
+        header(header: "Expires: 0");
+        header(header: "Cache-Control: must-revalidate");
+        header(header: "Pragma: public");
+        header(header: "Content-Length: " . filesize(filename:$filePath));
+        
+        readfile(filename:$filePath);
+
+        exit(0);
+    }
+
+    /**
+     * Moves an uploaded file to a given destination path.
+     * 
+     * @param string $tempPath The temporary path of the uploaded file.
+     * @param string $destinationPath The path to move the uploaded file to.
+     * @throws GamerHelpDeskException If the temporary file does not exist or if it is not an uploaded file or if the destination directory does not exist or if the destination directory is not writable or if the destination file already exists.
+     */
+    public function moveUploadedFile(string $tempPath, string $destinationPath): void
+    {
+        if(!file_exists(filename: $tempPath))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "Temporary file not found: $tempPath");
+        }
+
+        if(!is_uploaded_file(filename: $tempPath))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "File is not an uploaded file: $tempPath");
+        }
+
+        if(!is_dir(filename: dirname(path: $destinationPath)))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "Destination directory does not exist: " . dirname(path: $destinationPath));
+        }
+
+        if(file_exists(filename: $destinationPath))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "Destination file already exists: $destinationPath");
+        }
+
+        if(!is_writable(filename: dirname(path: $destinationPath)))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "Cannot move uploaded file to destination: $destinationPath. Check permissions.");
+        }
+
+        if(!move_uploaded_file(from: $tempPath, to:  $destinationPath))
+        {
+            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::FILE_SYSTEM_EXCEPTION, "Failed to move uploaded file from $tempPath to $destinationPath. Check permissions.");
+        }
     }
 }

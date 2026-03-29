@@ -37,6 +37,16 @@ use GamerHelpDesk\Exception\{
     GamerHelpDeskExceptionEnum
 };
 use GamerHelpDesk\View\View;
+use GamerHelpDesk\FileSystem\{
+    FileSystem,
+    FileTypeEnum,
+    FilterByExtension
+};
+use GamerHelpDesk\Http\{
+    Request,
+    Response
+};
+
 
 class Stream
 {
