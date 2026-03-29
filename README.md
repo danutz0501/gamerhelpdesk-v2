@@ -31,6 +31,7 @@
 - hash helper function;
 - registry class;
 - random stuff using Randomizer php extension;
+- added front end stuff gulp to build/watch bootstrap 5 bootstrap 5 icons custom scss/css js and bundle them(going to have to delete them from git: bs5 and icons, there is no reason to have them in git, you can just build them running npx gulp build)
   
 Components to be added:
 - response classes.
