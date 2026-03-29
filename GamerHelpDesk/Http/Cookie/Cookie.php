@@ -73,14 +73,14 @@ class Cookie
             return; // Already loaded
         }
 
-        $keysJson = getenv('COOKIE_KEYS');
+        $keysJson = getenv(name:'COOKIE_KEYS');
         if (!$keysJson) 
         {
             throw new \RuntimeException("COOKIE_KEYS environment variable not set.");
         }
 
-        $keys = json_decode($keysJson, true);
-        if (!is_array($keys) || empty($keys)) 
+        $keys = json_decode(json: $keysJson, associative: true);
+        if (!is_array(value:$keys) || empty($keys)) 
         {
             throw new \RuntimeException("Invalid COOKIE_KEYS format.");
         }
@@ -88,7 +88,7 @@ class Cookie
         // Validate keys
         foreach ($keys as $keySet) 
         {
-            if (!isset($keySet['enc'], $keySet['hmac']) || strlen($keySet['enc']) < 32 || strlen($keySet['hmac']) < 32) 
+            if (!isset($keySet['enc'], $keySet['hmac']) || strlen(string: $keySet['enc']) < 32 || strlen(string: $keySet['hmac']) < 32) 
             {
                 throw new \RuntimeException("Invalid key set in COOKIE_KEYS.");
             }
