@@ -89,6 +89,22 @@ try
         require_once COMPOSER_PATH . 'autoload.php';
 
         /**
+         * Load environment variables from the .env file in the base directory of the application.
+         * This will make environment variables available throughout the application via $_ENV, $_SERVER, and getenv() functions.
+         * The .env file should contain key=value pairs of environment variables, one per line.
+         * Lines starting with # or ; are treated as comments and ignored, and empty lines are also ignored.
+         * It can be used to store sensitive information like database credentials, API keys, and other configuration settings that should not be hardcoded in the source code.
+         * @see \GamerHelpDesk\Util\Env\Env for more details on how the environment variables are loaded and accessed.
+         * Can support variable expansion in values using {VAR_NAME} syntax, allowing you to reference other environment variables within the .env file.
+         * @example of a .env file content:
+         * TEST="env"
+         * TEST2="env2  with spaces plus env is {TEST}"
+         * The load method will throw a GamerHelpDeskException if the specified directory does not exist
+        */
+        $env = new \GamerHelpDesk\Util\Env\Env();
+        $env->load(directory: BASE_PATH);
+
+        /**
          * Initialize the session
          */
         \GamerHelpDesk\Http\Session\Session::getInstance();
