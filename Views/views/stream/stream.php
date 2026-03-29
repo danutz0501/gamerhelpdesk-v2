@@ -36,5 +36,4 @@ include_once __DIR__ . '/../../partial/default-head.php';
     </div>
 </div>
 
-</body>
-</html>
+<?php include_once __DIR__ . '/../../partial/default-footer.php'; ?>
