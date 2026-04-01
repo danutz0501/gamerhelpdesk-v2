@@ -43,7 +43,6 @@ class Database extends \GamerHelpDesk\Database\Database
         parent::connect($path.'/gamerhelpdesk.db');
     }
 
-    
     /**
      * Creates the necessary tables for the database.
      * Tables created are: image, video, audio, title, and slideshow.

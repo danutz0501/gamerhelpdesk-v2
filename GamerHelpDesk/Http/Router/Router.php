@@ -276,5 +276,4 @@ class Router
             "POST" => iterator_to_array(iterator: $this->postRoutes),
         ];
     }
-}
-    
+}  
