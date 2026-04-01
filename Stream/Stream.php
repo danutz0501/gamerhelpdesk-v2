@@ -86,7 +86,7 @@ class Stream
         echo "Be right back - Stream...<br>";
     }
 
-    #[Get(route: '/show-image/{#imageNumber :number}')]
+    #[Get(route: '/show-image/{#imageNumber :number}', middleware: ['auth'])]
     public function showImage(...$images)
     {
         echo "Stream - Show Image number:  " . $images["imageNumber"] . "<br>";
