@@ -103,6 +103,7 @@ try
         */
         $env = new \GamerHelpDesk\Util\Env\Env();
         $env->load(directory: BASE_PATH);
+        ob_start();
 
         /**
          * Initialize the session
@@ -132,6 +133,7 @@ try
          * Set the base path for the router to ensure that it correctly handles requests when the application is not hosted at the root of the domain.
          */
         $router->basePath = "/sites/gamerhelpdesk-v2/www";
+        $router->middlewareNamespace = "Middleware\\";
 
         /**
          * Ads routes to router
@@ -186,8 +188,9 @@ try
      */
     if($e->getCode() == 404) // Handle 404 Not Found errors
     {
-        header("HTTP/1.1 404 Not Found");
-        header("Status: 404 Not Found");
+        // header("HTTP/1.1 404 Not Found");
+        http_response_code(response_code: 404);
+        // header("Status: 404 Not Found");
         echo "<h1 style='color: #721c24;'>Page not found!</h1>";
         echo "<br>";
         echo "<hr>";
@@ -215,8 +218,9 @@ try
     }
     else // Handle other errors
     {
-        header("HTTP/1.1 500 Internal Server Error");
-        header("Status: 500 Internal Server Error");
+        //header("HTTP/1.1 500 Internal Server Error");
+        http_response_code(response_code: 500);
+        // header("Status: 500 Internal Server Error");
         echo "<h1 style='color: #721c24;'>An error occurred!</h1>";
         echo "<br>";
         echo "<hr>";
@@ -253,4 +257,6 @@ finally
 
     // Restore the error handler
     //restore_error_handler();
+
+    ob_get_flush();
 }

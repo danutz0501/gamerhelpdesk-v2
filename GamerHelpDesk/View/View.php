@@ -47,7 +47,6 @@ class View
 {
     protected string $viewName;
 
-    
     /**
      * Constructs a new View object.
      *
@@ -73,7 +72,6 @@ class View
         }
     }
 
-    
     /**
      * Assigns a value to a key in the view data array.
      *
@@ -88,7 +86,6 @@ class View
         $this->data[$key] = $value;
     }
 
-    
     /**
      * Renders the view and returns the rendered content as a string.
      *

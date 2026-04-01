@@ -27,9 +27,9 @@ declare(strict_types=1);
 namespace GamerHelpDesk\Http\Router;
 
 use GamerHelpDesk\Util\SingletonTrait\SingletonTrait;
-use GamerHelpDesk\Http\Router\Attribute\RouteAttribute;
 use GamerHelpDesk\Http\Request\Request;
 use GamerHelpDesk\Http\Response\Response;
+use GamerHelpDesk\Http\Router\Attribute\RouteAttribute;
 use GamerHelpDesk\Exception\{
     GamerHelpDeskException,
     GamerHelpDeskExceptionEnum
@@ -40,20 +40,28 @@ use ReflectionAttribute;
 
 class Router
 {
-    /**
-     * The router instance. It is a singleton.
-     * @var Router $instance
-     */
+    /** @use SingletonTrait */
     use SingletonTrait;
-
     /**
-     * The base path of the router.
-     * @var string $basePath
+     * The base path for the router. This is the path that will be prefixed to all routes defined in the router.
+     * @var string
      */
+
     public string $basePath = "/";
+    /**
+     * Middleware namespace. This will be prefixed to all middleware classes
+     * @var string
+     */
+    public string $middlewareNamespace = "";
 
     /**
-     * The request object.
+     * The request object for the router.
+     * @var Request
+     */
+
+    /**
+     * The response object for the router.
+     * @var Response
      */
     public protected(set) Request $request
     {
@@ -64,7 +72,8 @@ class Router
     }
 
     /**
-     * The response object.
+     * The response object for the router.
+     * @var Response
      */
     public protected(set) Response $response
     {
@@ -75,7 +84,8 @@ class Router
     }
 
     /**
-     * The collection of GET routes.
+     * The collection of GET routes for the router.
+     * @var RouteCollection
      */
     public protected(set) RouteCollection $getRoutes
     {
@@ -86,7 +96,8 @@ class Router
     }
 
     /**
-     * The collection of POST routes.
+     * The collection of POST routes for the router.
+     * @var RouteCollection
      */
     public protected(set) RouteCollection $postRoutes
     {
@@ -97,8 +108,8 @@ class Router
     }
 
     /**
-     * The method(handler) of the request.
-     * @var string $method
+     * The method to call when the route is matched.
+     * @var string
      */
     public protected(set) string $method
     {
@@ -109,14 +120,26 @@ class Router
     }   
 
     /**
-     * The parameters passed to the route handler.
-     * @var array $params
+     * The parameters extracted from the URI when the route is matched.
+     * @var array
      */
     public protected(set) array $params
     {
         get
         {
             return $this->params;
+        }
+    }
+
+    /**
+     * The middleware`s associated with the route.
+     * @var array|null
+     */
+    public protected(set) ?array $middleware
+    {
+        get
+        {
+            return $this->middleware;
         }
     }
 
@@ -133,10 +156,12 @@ class Router
     }
 
     /**
-     * Dispatches the request to the appropriate route handler.
-     * It checks if any routes are defined for the given HTTP method, and if so, it iterates over them, verifying if the current route matches the given URI.
-     * If a matching route is found, it sets the method and parameters properties and calls the matching route handler using call_user_func_array.
-     * If no matching route is found, it throws a GamerHelpDeskException with the ROUTE_NOT_FOUND_EXCEPTION code.
+     * Dispatches the request to the appropriate route.
+     * It checks the HTTP method and dispatches the request to the appropriate route collection.
+     * If no route is found, it throws an exception.
+     * If a route is found, it sets the method, parameters, and middleware properties and calls the prepareCallable method to get the class and method to call.
+     * If middleware is associated with the route, it will call the handle method of each middleware class before calling the controller method.
+     * If a middleware class does not exist or does not have a handle method, it will throw an exception.
      * @throws GamerHelpDeskException
      */
     public function dispatch(): void
@@ -151,7 +176,28 @@ class Router
             {
                 $this->method = $route->method;
                 $this->params = $route->parameters;
+                $this->middleware = $route->middleware;
                 [$class, $method] = $this->prepareCallable();
+                if($this->middleware !== null)
+                {
+                    foreach($this->middleware as $middleware)
+                    {
+                        $middleware =  $this->middlewareNamespace . ucfirst(string: strtolower(string: $middleware));
+                        if(!class_exists(class: $middleware))
+                        {
+                            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::INVALID_ARGUMENT_EXCEPTION, "Middleware class {$middleware} does not exist.");
+                        }
+                        $middlewareInstance = new $middleware();
+                        if(method_exists(object_or_class:  $middlewareInstance, method: "handle"))
+                        {
+                            $middlewareInstance->handle(request: $this->request, response: $this->response);
+                        }
+                        else
+                        {
+                            throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::INVALID_ARGUMENT_EXCEPTION, "Middleware class {$middleware} must have a handle method.");
+                        }
+                    }
+                }
                 call_user_func_array(callback: [new $class(), $method], args: $this->params);
                 return;
             }
@@ -161,50 +207,38 @@ class Router
 
     /**
      * Adds a named route to the router.
-     * This method adds a route to the GET or POST routes collection.
-     * It takes three parameters: the HTTP verb, the route path, and the method to call when the route is matched.
+     * The named route is identified by its HTTP verb and route path.
+     * The method to call when the route is matched is specified by the $method parameter.
+     * Optionally, middleware can be associated with the route by providing an array of middleware classes as the $middleware parameter.
      * Supported HTTP verbs are GET and POST.
      * If an unsupported HTTP verb is provided, it will throw a GamerHelpDeskException with the INVALID_ARGUMENT_EXCEPTION code.
-     * @param string $verb The HTTP verb to use for the route (GET or POST)
-     * @param string $route The path of the route (relative to the base path)
-     * @param string $method The method to call when the route is matched
+     * @param string $verb The HTTP verb (GET or POST).
+     * @param string $route The route path.
+     * @param string $method The method to call when the route is matched.
+     * @param array|null $middleware The middleware classes associated with the route.
      * @throws GamerHelpDeskException
      */
-    public function addNamedRoute(string $verb, string $route, string $method): void
+    public function addNamedRoute(string $verb, string $route, string $method, ?array $middleware = null): void
     {
         match(strtoupper(string: $verb))
         {
-            "GET"   => $this->getRoutes->addRoute(route: new Route(regexToConvert: $this->basePath . $route, method: $method)),
-            "POST"  => $this->postRoutes->addRoute(route: new Route(regexToConvert: $this->basePath . $route, method: $method)),
+            "GET"   => $this->getRoutes->addRoute(route: new Route(regexToConvert: $this->basePath . $route, method: $method, middleware: $middleware)),
+            "POST"  => $this->postRoutes->addRoute(route: new Route(regexToConvert: $this->basePath . $route, method: $method, middleware: $middleware)),
             default => throw new GamerHelpDeskException(GamerHelpDeskExceptionEnum::INVALID_ARGUMENT_EXCEPTION, "Invalid HTTP verb: {$verb}. Supported verbs are GET and POST.")
         };
     }
 
     /**
-     * Adds a set of routes defined by the RouteAttribute class to the router.
-     * This method takes an array of class names as its parameter, and adds each class's methods that are annotated with the RouteAttribute class to the router.
-     * The RouteAttribute class must be used to annotate the methods that should be added to the router.
-     * The RouteAttribute class takes three parameters: the HTTP verb, the route path, and the method to call when the route is matched.
+     * Adds a named route to the router.
+     * The named route is identified by its HTTP verb and route path.
+     * The method to call when the route is matched is specified by the $method parameter.
+     * Optionally, middleware can be associated with the route by providing an array of middleware classes as the $middleware parameter.
      * Supported HTTP verbs are GET and POST.
      * If an unsupported HTTP verb is provided, it will throw a GamerHelpDeskException with the INVALID_ARGUMENT_EXCEPTION code.
-     * @param array $routes An array of class names whose methods should be added to the router.
-     */
-    public function addNamedRoutes(array $routes): void
-    {
-        foreach($routes as $route)
-        {
-            $this->addNamedRoute(verb: $route['verb'], route: $route['route'], method: $route['method']);
-        }
-    }
-
-    /**
-     * Adds a set of routes defined by the RouteAttribute class to the router.
-     * This method takes an array of class names as its parameter, and adds each class's methods that are annotated with the RouteAttribute class to the router.
-     * The RouteAttribute class must be used to annotate the methods that should be added to the router.
-     * The RouteAttribute class takes three parameters: the HTTP verb, the route path, and the method to call when the route is matched.
-     * Supported HTTP verbs are GET and POST.
-     * If an unsupported HTTP verb is provided, it will throw a GamerHelpDeskException with the INVALID_ARGUMENT_EXCEPTION code.
-     * @param array $routes An array of class names whose methods should be added to the router.
+     * @param string $verb The HTTP verb (GET or POST).
+     * @param string $route The route path.
+     * @param array|null $middleware The middleware classes associated with the route.
+     * @throws GamerHelpDeskException
      */
     public function addAttributeRoute(array $routes): void
     {
@@ -222,7 +256,7 @@ class Router
                 foreach($attributes as $attribute)
                 {
                     $instance = $attribute->newInstance();
-                    $this->addNamedRoute(verb: $instance->verb, route: $instance->route, method: "{$attributeClass}::{$method->getName()}");
+                    $this->addNamedRoute(verb: $instance->verb, route: $instance->route, method: "{$attributeClass}::{$method->getName()}", middleware: $instance->middleware);
                 }
             }
         }        
@@ -276,4 +310,4 @@ class Router
             "POST" => iterator_to_array(iterator: $this->postRoutes),
         ];
     }
-}  
+}   

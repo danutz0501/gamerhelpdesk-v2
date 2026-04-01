@@ -44,10 +44,12 @@ class RouteAttribute
      * It will automatically register the route with the Router class when the attribute is instantiated.
      * @param string $verb The HTTP verb (GET, POST, PUT, DELETE, etc.)
      * @param string $route The route path (e.g. "/users/{id}")
+     * @param array|null $middleware An optional array of middleware to be applied to the route.
      */
     public function __construct(
         public string $verb,
         public string $route,
+        public ?array $middleware = null
     ) 
     {
     }

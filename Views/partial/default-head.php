@@ -43,5 +43,5 @@ declare(strict_types=1);
     <meta name="theme-color" content="#ffffff">
     <meta name="description" content="Internal home page for internal users only.">
     <meta name="keywords" content="internal, home, page, users, access">
-    <?= $customCss; ?>
 </head>
+<body

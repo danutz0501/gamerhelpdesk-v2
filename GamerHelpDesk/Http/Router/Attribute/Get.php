@@ -34,8 +34,15 @@ namespace GamerHelpDesk\Http\Router\Attribute;
  */
 class Get extends RouteAttribute 
 {
-    public function __construct(string $route)
+    /**
+     * Constructor to initialize the route.
+     * It takes two parameters: the route path and the middleware associated with the route.
+     * It calls the parent constructor with the verb set to 'GET'.
+     * @param string $route The route path.
+     * @param array|null $middleware The middleware associated with the route.
+     */
+    public function __construct(string $route, ?array $middleware = null)
     {
-        parent::__construct(verb:'GET', route: $route);
+        parent::__construct(verb:'GET', route: $route, middleware: $middleware);
     }
 }

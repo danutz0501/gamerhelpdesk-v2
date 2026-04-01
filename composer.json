@@ -19,7 +19,8 @@
             "GamerHelpDesk\\": "GamerHelpDesk/",
             "Stream\\": "Stream/",
             "Tools\\": "Tools/",
-            "Database\\": "Database/"
+            "Database\\": "Database/",
+            "Middleware\\": "Middleware/"
         }
     }
 }

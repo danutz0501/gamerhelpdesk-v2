@@ -86,6 +86,18 @@ class Route
             return $this->regex;
         }
     }
+
+    /**
+     * The middleware`s associated with the route.
+     * @var array|null
+     */
+    public protected(set) ?array $middleware
+    {
+        get
+        {
+            return $this->middleware;
+        }
+    }
     
     /**
      * Constructor to initialize the route.
@@ -93,11 +105,13 @@ class Route
      * It sets the method and parameters properties and calls the convertRegex method to prepare the regex for matching.
      * @param string $regexToConvert The regex to convert to a valid PHP regex.
      * @param string $method The method to call when the route is matched.
+     * @param array|null $middleware The middleware`s associated with the route.
      */
-    public function __construct(public string $regexToConvert, string $method,)
+    public function __construct(public string $regexToConvert, string $method, ?array $middleware = null)
     {
         $this->method = $method;
         $this->convertRegex();
+        $this->middleware = $middleware;
     }
 
     /**
@@ -117,21 +131,25 @@ class Route
     }
 
     /**
-     * Extracts the parameters from the given matches array.
-     * It filters out any keys that are not strings and returns the resulting array.
-     * @param array $matches The matches array to extract parameters from.
-     * @return array The extracted parameters.
+     * Extracts the parameters from the matches array returned by preg_match.
+     * The parameters are extracted from the matches array by iterating over it and selecting every third element.
+     * The extracted parameters are then returned as an array.
+     * @param array $matches The matches array returned by preg_match.
+     * @return array The extracted parameters as an array.
      */
     private function extractParameters(array $matches): array
     {
-        foreach($matches as $key => $value)
+        $temporaryArray = [];
+        $matches = array_values(array: $matches);
+        $numberOfParameters = count(value: $matches);
+        for($i = 1; $i <= $numberOfParameters; $i++)
         {
-            if(!is_string($key))
+            if($i % 3 === 0)
             {
-                unset($matches[$key]);
+               $temporaryArray[] = $matches[$i];
             }
         }
-        return $matches;
+        return $temporaryArray;
     }
 
     /**

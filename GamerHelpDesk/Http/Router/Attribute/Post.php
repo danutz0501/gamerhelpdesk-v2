@@ -34,9 +34,16 @@ namespace GamerHelpDesk\Http\Router\Attribute;
  */
 class Post extends RouteAttribute 
 {
-    public function __construct(string $route)
+    /**
+     * Constructor to initialize the route.
+     * It takes two parameters: the route path and the middleware associated with the route.
+     * It calls the parent constructor with the verb set to 'POST'.
+     * @param string $route The route path.
+     * @param array|null $middleware The middleware associated with the route.
+     */
+    public function __construct(string $route, ?array $middleware = null)
     {
-        parent::__construct(verb:'POST', route: $route);
+        parent::__construct(verb:'POST', route: $route, middleware: $middleware);
     }
 }
 
