@@ -85,6 +85,7 @@ class Env
      * Parses key=value pairs and sets them in $_ENV, $_SERVER, and using putenv().
      * Expands environment variables in values using {VAR_NAME} syntax.
      * Only sets environment variables if they are not already set in $_ENV, $_SERVER, or getenv().
+     * Casts values to appropriate types (boolean, integer, float).
      * Will throw a GamerHelpDeskException if the file does not exist or is not readable.
      * Will stop after loading the first .env file found.
      *
@@ -144,9 +145,9 @@ class Env
             // Only set the environment variable if it is not already set in $_ENV, $_SERVER, or getenv()
             if (!isset($_ENV[$name]) && !isset($_SERVER[$name]) && getenv($name) === false) 
             {
-                $_ENV[$name]    = $value;
-                $_SERVER[$name] = $value;
-                putenv("{$name}={$value}");
+                $_ENV[$name]    = $this->castValue($value);
+                $_SERVER[$name] = $this->castValue($value);
+                $this->castValue($value) && putenv("{$name}={$value}");
             }
         }
     }
@@ -161,5 +162,21 @@ class Env
     public function get(string $key, mixed $default = null): mixed
     {
         return $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key) ?: $default;
+    }
+
+    /**
+     * Casts a value to the appropriate type (boolean, integer, float).
+     *
+     * @param string $value The value to cast.
+     * @return mixed The casted value.
+     */
+    private function castValue(string $value): mixed
+    {
+        return match (strtolower($value)) {
+            'true' => true,
+            'false' => false,
+            'null' => null,
+            default => is_numeric($value) ? (strpos($value, '.') !== false ? (float)$value : (int)$value) : $value,
+        };
     }
 }

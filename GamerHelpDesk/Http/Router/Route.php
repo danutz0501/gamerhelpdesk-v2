@@ -125,7 +125,6 @@ class Route
         if(preg_match(pattern: $this->regex, subject: $uri, matches: $matches))
         {
             $this->parameters = $this->extractParameters($matches);
-            var_dump($this->parameters);
             return true;
         }
         return false;
