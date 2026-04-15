@@ -41,7 +41,7 @@ function scripts() {
 
 // Copy Bootstrap Icons
 function icons() {
-    return gulp.src(paths.bootstrapIcons + "bootstrap-icons.svg")
+    return gulp.src([paths.bootstrapIcons + "bootstrap-icons.svg", paths.bootstrapIcons + "bootstrap-icons.json", paths.bootstrapIcons + "bootstrap-icons.min.css", paths.bootstrapIcons + "bootstrap-icons.woff", paths.bootstrapIcons + "bootstrap-icons.woff2", paths.bootstrapIcons + "icons/**/*"], {encoding: false})
         .pipe(gulp.dest(paths.dist + "icons"));
 }
 

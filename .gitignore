@@ -52,3 +52,6 @@ Thumbs.db
 
 #sqlite databases
 *.db
+
+#bootstrap icons
+/icons
