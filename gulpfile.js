@@ -12,7 +12,7 @@ const paths = {
     js: "src/js/**/*.js",
     dist: "www/",
     bootstrapJS: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-    bootstrapIcons: "node_modules/bootstrap-icons/font/**/*"
+    bootstrapIcons: "node_modules/bootstrap-icons/**/*"
 };
 
 // Compile SCSS → CSS
@@ -26,6 +26,9 @@ function styles() {
         .pipe(gulp.dest(paths.dist + "css"));
 }
 
+function icons() {
+    return gulp.src(paths.bootstrapIcons)
+}
 // Bundle JS (Bootstrap + Custom)
 function scripts() {
     return gulp.src([paths.bootstrapJS, paths.js])
@@ -38,7 +41,7 @@ function scripts() {
 
 // Copy Bootstrap Icons
 function icons() {
-    return gulp.src(paths.bootstrapIcons)
+    return gulp.src(paths.bootstrapIcons + "bootstrap-icons.svg")
         .pipe(gulp.dest(paths.dist + "icons"));
 }
 

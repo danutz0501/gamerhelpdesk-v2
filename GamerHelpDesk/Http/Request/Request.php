@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace GamerHelpDesk\Http\Request;
 
 use Uri\Rfc3986\Uri;
+use GamerHelpDesk\Http\Session\Session;
 
 /**
  * Request class
@@ -226,6 +227,7 @@ class Request
         $this->setFiles();
         $this->setGet();
         $this->setPost();
+        Session::getInstance();
     }
 
     /**

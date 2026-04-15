@@ -125,7 +125,9 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
     {
         $this->savePath = $savePath;
         $this->sessionName = $sessionName;
-        if($this->savePath !== sys_get_temp_dir() && !is_dir(filename: $this->savePath) && !mkdir(directory: $this->savePath, recursive: true) && !is_dir(filename: $this->savePath)) {
+        if($this->savePath !== sys_get_temp_dir() && !is_dir(filename: $this->savePath) && 
+        !mkdir(directory: $this->savePath, recursive: true) && !is_dir(filename: $this->savePath)) 
+        {
             throw new \RuntimeException(message: "Failed to create session save path directory: $this->savePath");
         }
         return true;
@@ -151,7 +153,8 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
     public function read(string $sessionId): string
     {
         $file = "$this->savePath/sess_$sessionId";
-        if (file_exists(filename: $file) && is_readable(filename: $file)) {
+        if (file_exists(filename: $file) && is_readable(filename: $file)) 
+        {
             return (string) file_get_contents(filename: $file);
         }
         return '';
@@ -180,7 +183,8 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
     public function destroy(string $sessionId): bool
     {
         $file = "$this->savePath/sess_$sessionId";
-        if (file_exists(filename: $file)) {
+        if (file_exists(filename: $file)) 
+        {
             unlink(filename: $file);
         }
         return true;
@@ -193,9 +197,11 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
      */
     public function clear(): bool
     {
-        foreach (glob("$this->savePath/sess_*") as $file) {
+        foreach (glob("$this->savePath/sess_*") as $file) 
+        {
             clearstatcache(true, $file);
-            if (file_exists(filename: $file)) {
+            if (file_exists(filename: $file)) 
+            {
                 unlink(filename: $file);
             }
         }
@@ -209,9 +215,11 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
      */
     public function gc(int $maxLifetime): int|false
     {
-        foreach (glob("$this->savePath/sess_*") as $file) {
+        foreach (glob("$this->savePath/sess_*") as $file) 
+        {
             clearstatcache(true, $file);
-            if (filemtime($file) + $maxLifetime < time() && file_exists($file)) {
+            if (filemtime($file) + $maxLifetime < time() && file_exists($file)) 
+            {
                 unlink($file);
             }
         }
@@ -226,7 +234,8 @@ class Session implements SessionHandlerInterface, SessionUpdateTimestampHandlerI
      */
     public function updateTimestamp(string $sessionId, string $data): bool
     {
-        if (file_exists(filename: "$this->savePath/sess_$sessionId")) {
+        if (file_exists(filename: "$this->savePath/sess_$sessionId")) 
+        {
             return touch(filename: "$this->savePath/sess_$sessionId");
         }
         return false;

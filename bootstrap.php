@@ -106,11 +106,6 @@ try
         ob_start();
 
         /**
-         * Initialize the session
-         */
-        \GamerHelpDesk\Http\Session\Session::getInstance();
-
-        /**
          * Initialize the database
          */
         $database = \Database\Database::getInstance();
@@ -133,6 +128,10 @@ try
          * Set the base path for the router to ensure that it correctly handles requests when the application is not hosted at the root of the domain.
          */
         $router->basePath = "/sites/gamerhelpdesk-v2/www";
+
+        /**
+         * Set the middleware namespace for the router to ensure that it correctly handles requests when the application is not hosted at the root of the domain.
+         */
         $router->middlewareNamespace = "Middleware\\";
 
         /**

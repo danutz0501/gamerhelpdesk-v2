@@ -35,7 +35,11 @@ declare(strict_types=1);
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="services"><i class="bi bi-cloud"></i>&nbsp;Services</a>
+                    <a class="nav-link" href="services">
+                        <svg class="bi" role="img" width="1.5rem" height="1.5rem" fill="blue">
+                            <use xlink:href="bootstrap-icons.svg#twitch"/>
+                        </svg>
+                    &nbsp;Services</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

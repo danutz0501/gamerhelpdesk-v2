@@ -40,6 +40,7 @@ include_once __DIR__ . '/../../partial/default-head.php';
             <button class="btn btn-dark" onclick="location.reload();">Refresh</button>
             <h6>Stream starting...</h6>
         </div>
+        
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

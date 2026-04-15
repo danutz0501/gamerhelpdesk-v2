@@ -31,7 +31,15 @@ include_once __DIR__ . '/../../partial/default-head.php';
     <div class="row">
         <div class="col-12">
             <h4>Stream settings...</h4>
-            
+            <svg class="bi" width="32" height="32" fill="currentColor">
+                <use xlink:href="icons/bootstrap-icons.svg#heart-fill"></use>
+            </svg>
+            <svg class="bi" width="2rem" height="2rem" fill="currentColor">
+                <use xlink:href="icons/bootstrap-icons.svg#arrow-left"></use>
+            </svg>
+            <svg class="bi" width="2rem" height="2rem" fill="currentColor">
+                <use xlink:href="icons/bootstrap-icons.svg#arrow-right"></use>
+            </svg>
         </div>
     </div>
 </div>
