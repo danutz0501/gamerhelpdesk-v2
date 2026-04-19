@@ -127,7 +127,7 @@ try
         /**
          * Set the base path for the router to ensure that it correctly handles requests when the application is not hosted at the root of the domain.
          */
-        $router->basePath = "/sites/gamerhelpdesk-v2/www";
+        $router->basePath = "/www/gamerhelpdesk-v2/www";
 
         /**
          * Set the middleware namespace for the router to ensure that it correctly handles requests when the application is not hosted at the root of the domain.

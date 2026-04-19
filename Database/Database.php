@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Database;
 
 use GamerHelpDesk\Util\SingletonTrait\SingletonTrait;
+use PDO;
 
 class Database extends \GamerHelpDesk\Database\Database
 {
